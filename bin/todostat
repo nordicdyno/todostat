@@ -1,0 +1,4 @@
+#!perl
+use strict;
+use App::TodoStat::CLI;
+App::TodoStat::CLI->new->run(@ARGV);

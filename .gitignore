@@ -1,0 +1,12 @@
+MYMETA.*
+META.yml
+Makefile
+pm_to_blib
+blib/
+*~
+#docs/
+.carton/
+local/
+.todostat.cache
+.todostat.rc
+*.tmp
