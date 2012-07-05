@@ -10,8 +10,8 @@
 
     % cd your-project-dir
     
-    #... create config file .todostat.rc... [optional] see below
-    % vim .todostat.rc
+    #... create config file .todostatrc... [optional] see below
+    % vim .todostatrc
     
     # scan folders & create
     % todostat --scan
@@ -22,14 +22,27 @@
     # show short stat
     % todostat
 
+## Fast start
+
+Fast way to see `todostat` in action:
+
+    % git clone git://github.com/nordicdyno/todostat.git
+    % cd todostat
+    % perl -Ilib bin/todostat -s
+    
+    % perl -Ilib bin/todostat -l
+    % perl -Ilib bin/todostat -l -c
+    % perl -Ilib bin/todostat
+    % perl -Ilib bin/todostat -c
+
 ## Config files
 
-* user config (optional):  ~/.todostat.rc
-* local config (optional):  .todostat.rc
+* user config (optional):  ~/.todostatrc
+* local config (optional):  .todostatrc
 
 ### Config format
 
-Config is YAML file .todostat.rc like these:
+Config is YAML file .todostatrc like these:
 
     scan_only:
       - lib
@@ -54,7 +67,7 @@ Config is YAML file .todostat.rc like these:
 * `--list, --ls, -l` – show full statistic
 * `--quiet, -q` – quiet mode
 * `--color, -c` – color mode
-* `--zsh, -z` – zsh mode
+* `--zsh, -z` – zsh mode (useful for status line)
 * `--no-br, -n` – avoid newline symbol at end
 * `--help, -h`
 
@@ -68,7 +81,7 @@ My `oh-my-zsh` theme config:
         if $(which todostat &> /dev/null)
         then
           out=$(echo $(todostat -z -c -q))
-          if [ -n -z $out ]
+          if [ ! -z $out ]
           then
             echo "$out"
           fi
@@ -90,5 +103,5 @@ _Some zsh colors supported, but it didn't tested heavy._
 ## TODO
 
 * improve colors support
-* any bash support (?)
+* better bash support (?)
 * tests

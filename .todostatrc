@@ -1,0 +1,7 @@
+# vim:sw=2 ts=2 ft=yaml sts=2:
+---
+colors:
+  TODO:  'green bold'
+  HACK:  'magenta'
+  FIXME: 'red on_bright_yellow'
+  WTF: 'bright_red on_black'

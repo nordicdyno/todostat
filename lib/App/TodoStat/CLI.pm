@@ -5,11 +5,11 @@ use Data::Dumper;
 use Getopt::Long;
 use App::TodoStat;
 use Term::ANSIColor;
+use YAML::Tiny;
 use constant { SUCCESS => 0, INFO => 1, WARN => 2, ERROR => 3 };
 # FIXME: hash keys methods
 
 sub _default_cfg {
-    #$self-
     return { 
         scan_only  => ['.'], 
         file_masks => ['*'],
@@ -23,17 +23,10 @@ my %COLORS = (
     FIXME => 'red on_bright_yellow',
     WTF  => 'bright_red on_black',
 );
-my %ZSH_COLORS = (
-    FIXME => '%{$fg_bold[red]%}',
-    TODO  => '%{$fg_bold[blue]%}',
-    _reset => '%{$reset_color%}',
-);
-
-
 
 # Global vars
 my $CACHE_NAME  = '.todostat.cache';
-my $CONFIG_NAME = '.todostat.rc';
+my $CONFIG_NAME = '.todostatrc';
 
 sub print_help {
     print <<"HELP_TEXT_END";
@@ -185,7 +178,7 @@ sub show_total_stat {
     } $self->todostat->scan_for;
 
     print "\n";
-    print "files: ", $stat->{_files}, "\n";
+    print "(total files: ", $stat->{_files}, ")\n";
     $self->show_short_stat(\%short_stat);
 }
 
@@ -247,6 +240,10 @@ sub error {
 sub set_colors_cfg {
     my $self = shift;
 
+    if ($self->todostat->{colors}) {
+        %COLORS = (%COLORS, %{$self->todostat->{colors}});
+    }
+
     my (%cfg, $color_reset);
     if ($self->view_opt->{zsh}) {
         for my $type (keys %COLORS) {
@@ -280,7 +277,7 @@ sub set_colors_cfg {
             }
             
             # form strings like $fg_no_bold[${(L)COLOR}]
-            my $fmt_str = sprintf('$fg_' . '%s' . 'bold' . '[${%s%s}]',
+            my $fmt_str = sprintf('$fg_' . '%s' . 'bold' . '[%s%s]',
                 $color_opt{bold}   ? '' : 'no_',
                 $color_opt{bright} ? '(L)' : '',
                 $color_opt{color} 
@@ -305,11 +302,11 @@ sub set_colors_cfg {
 sub read_config {
     my $self = shift;
     my $file = shift;
-    my $cfg = YAML::Tiny->new->read($file);
+    my $cfg = YAML::Tiny->read($file);
     unless ($cfg) {
         die "Can't read config $file: $YAML::Tiny::errstr\n";
     }
-    return $cfg->[0];
+    return $cfg->[0] || {};
 }
 
 1;
