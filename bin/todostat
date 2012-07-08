@@ -1,4 +1,6 @@
-#!perl
+#!/usr/bin/perl
 use strict;
+use FindBin qw($Bin);
+use lib "$Bin/../lib";
 use App::TodoStat::CLI;
 App::TodoStat::CLI->new->run(@ARGV);
