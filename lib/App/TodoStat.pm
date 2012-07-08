@@ -71,7 +71,9 @@ sub full_stat {
         $total_stat{files}{$file}++;
     }
 
-    $total_stat{_files} = keys %{delete $total_stat{files}};
+    if (defined $total_stat{files}) {
+        $total_stat{_files} = keys %{delete $total_stat{files}};
+    }
 
     return {
         types => \%types_stat,
@@ -83,7 +85,8 @@ sub scan_and_write {
     my $self = shift;
     my $fh_out = shift;
 
-    my (%total_stat, %files_stat);
+    my %files_stat;
+    my %total_stat=(_sum=>0,_files=>0);
 
     my @excepts = map { qr/$_/ } @{ $self->{except} || [] };
 
