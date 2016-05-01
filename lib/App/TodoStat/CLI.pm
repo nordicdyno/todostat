@@ -178,6 +178,7 @@ sub show_total_stat {
     } $self->todostat->scan_for;
 
     print "\n";
+    $stat->{_files}=0 unless $stat->{_files};
     print "(total files: ", $stat->{_files}, ")\n";
     $self->show_short_stat(\%short_stat);
 }
